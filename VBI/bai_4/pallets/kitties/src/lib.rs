@@ -95,6 +95,12 @@ pub mod pallet {
 	#[pallet::getter(fn get_kitty)]
 	pub(super) type Kitties<T: Config> = StorageMap<_, Blake2_128Concat, T::Hash, Kitty<T>, OptionQuery>;
 
+	//key:owner
+	//value: kitty
+	#[pallet::storage]
+	#[pallet::getter(fn get_kitty_accountId)]
+	pub(super) type KittiesAccountId<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, Kitty<T>, OptionQuery>;
+
 
 	//key : T ::AccountId
 	//value: BoundedVec
@@ -150,7 +156,7 @@ pub mod pallet {
 		fn build(&self) {
 			for (owner, dna) in self.kitties.iter() {
 				let mut dnas = 	Pallet::<T>::gen_dna();
-				let gender = Pallet::<T>::gen_gender(dna).unwrap();
+				let gender = Pallet::<T>::gen_gender(&dna).unwrap();
 				let mut kitty = Kitty::<T> {
 					dna : dnas.clone(),
 					price: 0u32.into(),
@@ -158,7 +164,7 @@ pub mod pallet {
 					owner: owner.clone(),
 		 			created_date : T::Time::now(),
 				};
-				Kitties::<T>::insert(owner, kitty);
+				KittiesAccountId::<T>::insert(kitty.owner.clone(), kitty);
 			}
 
 

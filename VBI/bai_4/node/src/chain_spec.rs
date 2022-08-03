@@ -160,7 +160,7 @@ fn testnet_genesis(
 			genesis_value : 10u32,
 		},
 		kitties : KittiesConfig {
-			kitties : Vec<get_account_id_from_seed::<sr25519::Public>("Alice"), b"olala".to_vec()>,
+			kitties : vec![(get_account_id_from_seed::<sr25519::Public>("Alice"), b"olala".to_vec()),(get_account_id_from_seed::<sr25519::Public>("Bob"), b"olalaa".to_vec())],
 		}
 		
 	}
